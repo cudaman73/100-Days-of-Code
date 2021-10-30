@@ -12,3 +12,7 @@ Needs:
 Requirements:
 * Print report of inventory
 * Check that inventory is sufficient for ordering drink
+  * Gives feedback if inventory is insufficient
+* Take money from customer and give correct change (or refund if not enough)
+  * Check if transaction is successful
+* Make Coffee
