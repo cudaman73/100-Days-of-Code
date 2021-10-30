@@ -28,14 +28,15 @@ resources = {
     "water": 300,
     "milk": 200,
     "coffee": 100,
-    "money": 0
+    "money": 0.00
 }
 
 
 def inventory_report():
-    for key, value in resources.items():
-        print(key, " : ", value)
-
+    print(f"Water: {resources['water']}ml")
+    print(f"Milk: {resources['milk']}")
+    print(f"Coffee: {resources['coffee']}g")
+    print(f"Money: ${resources['money']}")
 
 def check_inventory(drink):
     for key, value in MENU[drink]["ingredients"].items():
