@@ -1,5 +1,3 @@
-import sys
-
 MENU = {
     "espresso": {
         "ingredients": {
@@ -40,9 +38,6 @@ def inventory_report():
 
 
 def check_inventory(drink):
-    if drink == "off":
-        print("Maintenance mode activated. Machine turning off")
-        sys.exit()
     for key, value in MENU[drink]["ingredients"].items():
         if value > resources[key]:
             print("We don't have enough", str(key), "at the moment, sorry.")
@@ -61,7 +56,7 @@ def handle_money(drink):
 
     if total > MENU[drink]["cost"]:
         print("You gave me $" + str(total) + ", which is too much.")
-        print("Here's $" + str(round(total - MENU[drink]["cost"],2)) + " in change.")
+        print("Here's $" + str(round(total - MENU[drink]["cost"], 2)) + " in change.")
     elif total < MENU[drink]["cost"]:
         print("You gave me $" + str(total) + ", which isn't enough, starting over")
         return "fail"
@@ -69,18 +64,21 @@ def handle_money(drink):
     return "success"
 
 
-
 def make_coffee(drink):
     for key, value in MENU[drink]["ingredients"].items():
         resources[key] -= value
 
 
-choice = "start"
+is_on = True
 
-while choice != "off":
+
+while is_on:
     choice = input("What would you like? (espresso/latte/cappuccino):")
 
-    if choice == "report":
+    if choice == "off":
+        print("Maintenance mode activated. Machine turning off")
+        is_on = False
+    elif choice == "report":
         inventory_report()
     else:
         status = check_inventory(choice)
