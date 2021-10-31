@@ -35,7 +35,7 @@ resources = {
 def inventory_report():
     """Prints an on-hand inventory report"""
     print(f"Water: {resources['water']}ml")
-    print(f"Milk: {resources['milk']}")
+    print(f"Milk: {resources['milk']}ml")
     print(f"Coffee: {resources['coffee']}g")
     print(f"Money: ${resources['money']}")
 
