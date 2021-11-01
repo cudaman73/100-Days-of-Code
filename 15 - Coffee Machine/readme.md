@@ -7,7 +7,7 @@ We are building a basic version of the software that would control a commercial 
 Needs:
 * Make three hot flavors
 * Has internal resources that need to be managed
-* Has to be coin operated (input pennies, nickels, and dimes)
+* Has to be coin operated (input pennies, nickels, dimes, and quarters)
 
 Requirements:
 * Print report of inventory
