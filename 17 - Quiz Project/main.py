@@ -12,4 +12,4 @@ quiz = QuizBrain(question_bank)
 while quiz.still_has_questions():
     quiz.next_question()
 
-print(f"You scored {quiz.score} out of {len(question_bank)}. Good job!")a
+print(f"You scored {quiz.score} out of {len(question_bank)}. Good job!")
