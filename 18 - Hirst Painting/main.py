@@ -1,4 +1,5 @@
 import turtle as t
+import random
 
 # List of David Hirst colors extracted from image.jpg, in rgb tuples
 image_colors = [(26, 108, 164), (193, 38, 81), (237, 161, 50), (234, 215, 86), (227, 237, 229), (223, 137, 176),
@@ -17,16 +18,11 @@ turtle.setpos(-150, -150)
 # initialize screen
 screen = t.Screen()
 screen.colormode(255)
-index = 0
 
 for _ in range(10):
     for _ in range(10):
-        turtle.dot(20, image_colors[index])
+        turtle.dot(20, image_colors[random.randint(0, len(image_colors) - 1)])
         turtle.forward(50)
-        if index < len(image_colors) - 1:
-            index += 1
-        else:
-            index = 0
     new_y = turtle.ycor() + 50
     turtle.setpos(-150, new_y)
 
