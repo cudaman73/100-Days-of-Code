@@ -1,4 +1,4 @@
-#100 Days of Code
+# 100 Days of Code
 
 This program is created by Angela Yu and published on Udemy. It is available at the following address:
 
