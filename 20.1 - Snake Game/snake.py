@@ -12,13 +12,22 @@ class Snake:
     """Creates 3-segment snake and defines movement"""
     def __init__(self):
         self.segments = []
-        self.key_pressed = False
-        for _ in range(3):
-            self.segments.append(Turtle(shape="square"))
-            self.segments[_].color("white")
-            self.segments[_].penup()
-            self.segments[_].goto(START_POS[_])
+        self.create_snake()
         self.head = self.segments[0]
+
+    def create_snake(self):
+        for _ in START_POS:
+            self.add_segment(_)
+
+    def add_segment(self, position):
+        new_segment = Turtle("square")
+        new_segment.color("white")
+        new_segment.penup()
+        new_segment.goto(position)
+        self.segments.append(new_segment)
+
+    def extend(self):
+        self.add_segment(self.segments[-1].position())
 
     def move(self):
         for seg in range(len(self.segments) - 1, 0, -1):
