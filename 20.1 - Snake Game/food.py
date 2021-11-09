@@ -18,4 +18,5 @@ class Food(Turtle):
         pos_y = random.randint(-280, 280)
         self.setpos(pos_x, pos_y)
 
-
+    def reset_self(self):
+        self.is_eaten()

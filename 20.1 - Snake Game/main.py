@@ -20,8 +20,14 @@ screen.onkey(snake.down, "Down")
 screen.onkey(snake.left, "Left")
 screen.onkey(snake.right, "Right")
 
-running = True
 
+def restart_game():
+    snake.reset_self()
+    scoreboard.reset_self()
+    food.reset_self()
+
+
+running = True
 while running:
     screen.update()
     time.sleep(0.1)
@@ -35,13 +41,14 @@ while running:
 
     # detect wall collision
     if snake.head.xcor() < -290 or snake.head.xcor() > 290 or snake.head.ycor() < -290 or snake.head.ycor() > 290:
-        scoreboard.game_over()
-        running = False
+        scoreboard.reset_self()
+        snake.reset_self()
 
     # detect self collision, slicing out head from list
     for _ in snake.segments[1:]:
         if snake.head.distance(_) < 10:
-            scoreboard.game_over()
-            running = False
+            scoreboard.reset_self()
+            snake.reset_self()
+
 
 screen.exitonclick()
