@@ -28,11 +28,14 @@ while len(named_states) < 50:
 
     guess = screen.textinput(f"{len(named_states)}/50 States Correct", "What's another state's name?").title()
 
+# utilizing list comprehension we shall make this code simpler!
+missed_states = [state for state in list_of_states if state not in named_states]
+
 # once game is over - let the user know which states they missed in a csv
-for state in list_of_states:
-    if state not in named_states:
-        data = key[key.state == state]
-        missed_states["state"].append(state)
-        missed_states["location"].append((int(data.x), int(data.y)))
+# for state in list_of_states:
+#     if state not in named_states:
+#         data = key[key.state == state]
+#         missed_states["state"].append(state)
+#         missed_states["location"].append((int(data.x), int(data.y)))
 
 pandas.DataFrame(missed_states).to_csv("missed_states.csv")
