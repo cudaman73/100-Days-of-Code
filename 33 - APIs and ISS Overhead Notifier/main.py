@@ -5,7 +5,7 @@ import smtplib
 from math import isclose
 
 
-def iss_in_range(MY_LAT, MY_LONG):
+def iss_in_range(lat, long):
     response = requests.get(url="http://api.open-notify.org/iss-now.json")
     response.raise_for_status()
     data = response.json()
@@ -15,7 +15,7 @@ def iss_in_range(MY_LAT, MY_LONG):
 
     # Here I used the math.isclose function to check relative values instead of doing
     # value1 <= lat <= value2 because I feel like it's more elegant
-    return isclose(MY_LAT, iss_latitude, abs_tol=5) and isclose(MY_LONG, iss_longitude, abs_tol=5)
+    return isclose(lat, iss_latitude, abs_tol=5) and isclose(long, iss_longitude, abs_tol=5)
 
 
 def is_dark(lat, long):
@@ -35,12 +35,12 @@ def is_dark(lat, long):
     return sunset <= time_now <= sunrise
 
 
-#If the ISS is close to my current position
+# If the ISS is close to my current position
 # and it is currently dark
 # Then send me an email to tell me to look up.
 # BONUS: run the code every 60 seconds.
 
-if iss_in_range(MY_LAT, MY_LONG) and isdark(MY_LAT, MY_LONG):
+if iss_in_range(MY_LAT, MY_LONG) and is_dark(MY_LAT, MY_LONG):
     with smtplib.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
         connection.login(user=email, password=app_key)
