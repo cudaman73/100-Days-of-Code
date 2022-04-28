@@ -9,9 +9,13 @@ from twilio.rest import Client
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
+
+# I'm sure there's a better way to do this, but it's what I could think of without doing any googling.
+# Jank level: Moderate
 TODAY = datetime.today().strftime('%Y-%m-%d')
 YESTERDAY = TODAY[:-1] + str(int(TODAY[-1]) - 1)
 TWO_DAYS_AGO = TODAY[:-1] + str(int(TODAY[-1]) - 2)
+
 REGEX = re.compile('(<.*?>)')
 
 av_params = {
@@ -33,7 +37,7 @@ value_delta = round(yesterday_price / two_day_price * 100 // 1 - 100)
 
 if value_delta >= 5 or value_delta <= -5:
 
-    # use newsapi to grab articles that mention STOCK
+    # use News API to grab articles that mention company's name
     na_params = {
         "q": f"{COMPANY_NAME}",
         "apikey": f"{NA_KEY}"
@@ -44,7 +48,7 @@ if value_delta >= 5 or value_delta <= -5:
     news_data = []
 
     # grab the first three articles that mention STOCK
-    # slight jank - some article briefs have html, so we use re.sub to strip them for easier readability
+    # some article briefs have html, so we use re.sub to strip them for easier readability
     for y in range(0, 3):
         news_title = news_request.json()['articles'][y]['title']
         news_brief = re.sub(REGEX, '', news_request.json()['articles'][y]['description'])
