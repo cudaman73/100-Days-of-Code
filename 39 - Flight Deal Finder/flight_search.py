@@ -23,7 +23,8 @@ class FlightSearch:
             "only_weekends": False,
             "curr": "USD",
             "locale": "en",
-            "max_stopovers": 2,
+            "one_for_city": 1,
+            "max_stopovers": 0,
             "limit": 200
         }
         response = requests.get(url=TEQUILA_URL, headers=TEQUILA_HEADER, params=params)
