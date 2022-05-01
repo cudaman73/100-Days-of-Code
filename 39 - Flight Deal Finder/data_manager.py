@@ -1,7 +1,5 @@
 from config import *
-import json
 import requests
-from sheets import destination_array as D_A
 
 
 class DataManager:
@@ -11,13 +9,24 @@ class DataManager:
         self.url = SHEETY_URL
         self.dest_cities = []
         self.get_destinations()
+        self.lowest_prices = {x['iataCode']: x['lowestPrice'] for x in self.destination_array}
 
     def get_destinations(self):
-        """TODO: change this back to a API request when finished - modified so we don't run out of API calls to sheety"""
-        # response = requests.get(url=self.url, headers={"Authorization": f"Bearer {SHEETY_TOKEN}"})
-        # response.raise_for_status()
-        # self.destination_array = response.json()["prices"]
-        self.destination_array = D_A
-        self.dest_cities = ",".join([x['iataCode'] for x in self.destination_array])
-        print(self.dest_cities)
+        response = requests.get(url=self.url, headers={"Authorization": f"Bearer {SHEETY_TOKEN}"})
+        response.raise_for_status()
+        self.destination_array = response.json()["prices"]
+        self.dest_cities = [x['iataCode'] for x in self.destination_array]
 
+    def update_sheets(self, destination, price):
+        for x in self.destination_array:
+            if x['city'] == destination:
+                json = {
+                    "price": {
+                        "city": x['city'],
+                        "iataCode": x['iataCode'],
+                        "lowestPrice": price
+                    }
+                }
+                response = requests.put(url=f'{self.url}/{x["id"]}', headers={"Authorization": f"Bearer {SHEETY_TOKEN}"}
+                                        , json=json)
+                response.raise_for_status()

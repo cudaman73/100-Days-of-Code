@@ -1,24 +1,25 @@
-#This file will need to use the DataManager,FlightSearch, FlightData, NotificationManager
-# classes to achieve the program requirements.
-
-from config import *
-from datetime import datetime, timedelta
-from data_manager import *
-from sheets import destination_array
-import requests
-import json
-import notification_manager
+from data_manager import DataManager
+from notification_manager import NotificationManager
 from flight_data import FlightData
 from flight_search import FlightSearch
 
 data = DataManager()
-dest_cities = ""
+search = FlightSearch()
+flight_data = FlightData()
+notify_manager = NotificationManager()
 
-
-dest_cities_2 = "PAR,BER,TYO,SYD,IST,KUL,NYC,SFO,CPT,LON"
-
-
-# flight_search = FlightSearch(dest_cities)
-#
-# flight_data = flight_search.get_cheapest_flights()
-
+for x in data.dest_cities:
+    flights = search.get_cheapest_flights(x)
+    for flight in flights:
+        if flight_data.is_flight_cheaper(flight["price"], data.lowest_prices[x]):
+            notify_manager.notify(
+                flight['cityFrom'],
+                flight['flyFrom'],
+                flight['cityTo'],
+                flight['flyTo'],
+                flight['route'][0]['local_departure'][0:10],
+                flight['route'][-1]['local_departure'][0:10],
+                flight['price'],
+            )
+            data.update_sheets(flight['cityTo'], flight['price'])
+            break

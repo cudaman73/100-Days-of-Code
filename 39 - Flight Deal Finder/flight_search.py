@@ -5,17 +5,16 @@ import json
 
 
 class FlightSearch:
-    #This class is responsible for talking to the Flight Search API.
-    def __init__(self, destination):
+    # This class is responsible for talking to the Flight Search API.
+    def __init__(self):
         self.url = TEQUILA_URL
         self.home = "AUS"
-        self.dest = destination
 
-    def get_cheapest_flights(self):
+    def get_cheapest_flights(self, destination):
         params = {
-            "fly_from": "AUS",
-            "fly_to": self.dest,
-            "date_from": f"{datetime.now().strftime('%d/%m/%Y')}",
+            "fly_from": self.home,
+            "fly_to": destination,
+            "date_from": f"{(datetime.now() +timedelta(1)).strftime('%d/%m/%Y')}",
             "date_to": f'{(datetime.now() + timedelta(days=180)).strftime("%d/%m/%Y")}',
             "nights_in_dst_from": 7,
             "nights_in_dst_to": 14,
