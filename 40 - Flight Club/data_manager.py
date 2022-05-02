@@ -1,33 +1,30 @@
-from config import *
+from pprint import pprint
 import requests
+from config import *
 
 
 class DataManager:
-    # This class is responsible for talking to the Google Sheet.
+
     def __init__(self):
-        self.destination_array = []
-        self.url = SHEETY_URL
-        self.dest_cities = []
-        self.get_destinations()
-        self.lowest_prices = {x['iataCode']: x['lowestPrice'] for x in self.destination_array}
+        self.destination_data = {}
 
-    def get_destinations(self):
-        response = requests.get(url=f'{self.url}/prices', headers={"Authorization": f"Bearer {SHEETY_TOKEN}"})
-        response.raise_for_status()
-        self.destination_array = response.json()["prices"]
-        self.dest_cities = [x['iataCode'] for x in self.destination_array]
+    def get_destination_data(self):
+        response = requests.get(url=f'{SHEETY_URL}/prices', headers={'Authorization': f'Bearer {SHEETY_TOKEN}'})
+        data = response.json()
+        with open("response.json", "w") as file:
+            file.write(response.json())
+        self.destination_data = data["prices"]
+        return self.destination_data
 
-    def update_sheets(self, destination, price):
-        for x in self.destination_array:
-            if x['city'] == destination:
-                json = {
-                    "price": {
-                        "city": x['city'],
-                        "iataCode": x['iataCode'],
-                        "lowestPrice": price
-                    }
+    def update_destination_codes(self):
+        for city in self.destination_data:
+            new_data = {
+                "price": {
+                    "iataCode": city["iataCode"]
                 }
-                response = requests.put(url=f'{self.url}/prices/{x["id"]}',
-                                        headers={"Authorization": f"Bearer {SHEETY_TOKEN}"},
-                                        json=json)
-                response.raise_for_status()
+            }
+            response = requests.put(
+                url=f"{SHEETY_URL}/prices/{city['id']}",
+                json=new_data
+            )
+            print(response.text)
