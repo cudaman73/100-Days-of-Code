@@ -40,19 +40,31 @@ class FlightSearch:
         try:
             data = response.json()["data"][0]
         except IndexError:
-            print(f"No flights found for {destination_city_code} with {stopovers} stopovers.")
-            if stopovers >= 1:
+            # exit the loop if no flights with 0 or 1 layovers
+            if stopovers > 1:
                 return None
-            self.check_flights(origin_city_code, destination_city_code, from_time, to_time, 1)
+            self.check_flights(origin_city_code, destination_city_code, from_time, to_time, stopovers + 1)
         else:
-            flight_data = FlightData(
-                price=data["price"],
-                origin_city=data["route"][0]["cityFrom"],
-                origin_airport=data["route"][0]["flyFrom"],
-                destination_city=data["route"][0]["cityTo"],
-                destination_airport=data["route"][0]["flyTo"],
-                out_date=data["route"][0]["local_departure"].split("T")[0],
-                return_date=data["route"][1]["local_departure"].split("T")[0]
-            )
-            print(f"{flight_data.destination_city}: ${flight_data.price}")
+            if stopovers == 1:
+                flight_data = FlightData(
+                    price=data["price"],
+                    origin_city=data["route"][0]["cityFrom"],
+                    origin_airport=data["route"][0]["flyFrom"],
+                    destination_city=data["route"][1]["cityTo"],
+                    destination_airport=data["route"][1]["flyTo"],
+                    out_date=data["route"][0]["local_departure"].split("T")[0],
+                    return_date=data["route"][2]["local_departure"].split("T")[0],
+                    stopovers=1,
+                    via_city=data["route"][0]["cityTo"]
+                )
+            else:
+                flight_data = FlightData(
+                    price=data["price"],
+                    origin_city=data["route"][0]["cityFrom"],
+                    origin_airport=data["route"][0]["flyFrom"],
+                    destination_city=data["route"][0]["cityTo"],
+                    destination_airport=data["route"][0]["flyTo"],
+                    out_date=data["route"][0]["local_departure"].split("T")[0],
+                    return_date=data["route"][1]["local_departure"].split("T")[0]
+                )
             return flight_data
