@@ -41,3 +41,5 @@ for x in range(len(addresses)):
 
     repeat_link = driver.find_element(By.LINK_TEXT, 'Submit another response')
     repeat_link.click()
+
+driver.close()
