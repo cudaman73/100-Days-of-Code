@@ -31,6 +31,8 @@ prices = [x.text.split("/")[0] for x in driver.find_elements(By.CLASS_NAME, 'lis
 
 driver.get(FORM_URL)
 for x in range(len(addresses)):
+
+    # there are only three inputs in our form, we need to cycle through them
     inputs = driver.find_elements(By.CLASS_NAME, 'whsOnd')
     inputs[0].send_keys(addresses[x])
     inputs[1].send_keys(prices[x])
